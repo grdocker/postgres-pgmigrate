@@ -1,3 +1,4 @@
-# template
+# postgres-pgmigrate
 
-This repository contains basic files needed to setup new image repository with tests and auto uploads
+This repository contains image, based on official postgres image, with yandex-pgmigrate installed
+It's intended to use in CI or dev envinroment, for quick database deployment
