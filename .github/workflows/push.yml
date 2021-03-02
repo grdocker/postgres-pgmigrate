@@ -5,12 +5,15 @@ on:
 jobs:
   build_image:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["12", "13", "latest"]
     steps:
       - name: Produce image tag
         id: tag
         run: |
           repo="${{ github.repository }}"
-          tag="${repo/${{ github.repository_owner }}/grascm}"
+          tag="${repo/${{ github.repository_owner }}/grascm}:${{ matrix.version }}"
           echo $tag
           echo "::set-output name=res::$tag"
       - name: Login to DockerHub
@@ -21,5 +24,7 @@ jobs:
       - name: Build docker image
         uses: docker/build-push-action@v2.3.0
         with:
+          build-args: |
+            POSTGRES_VERSION=${{ matrix.version }}
           push: true
           tags: ${{ steps.tag.outputs.res }}
